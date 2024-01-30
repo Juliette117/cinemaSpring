@@ -21,7 +21,7 @@ import java.util.List;
     property = "id"
 )
 @Table(name = "film")
- 
+
 public class Film {
     @Id
     @GeneratedValue
