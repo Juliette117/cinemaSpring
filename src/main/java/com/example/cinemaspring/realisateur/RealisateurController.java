@@ -35,14 +35,18 @@ public class RealisateurController {
         return realisateurService.findAll();
     }
 
-
-
     //GET /realisateurs/{id}
-//    @GetMapping("/{id}")
-//    public Realisateur findById(@PathVariable Integer id) {
-//
-//        return realisateurService.findById(id);
-//    }
+    @GetMapping("/{id}")
+    public Realisateur findById(@PathVariable Integer id) {
+
+        return realisateurService.findById(id);
+    }
+
+    @GetMapping("/{id}")
+    public RealisateurSansFilmDto findRealisateurById(@PathVariable Integer id) {
+        Realisateur realisateur = realisateurService.findById(id);
+        return objectMapper.convertValue(realisateur, RealisateurSansFilmDto.class);
+    }
 
     //POST /realisateurs
     @PostMapping
@@ -63,13 +67,6 @@ public class RealisateurController {
     public void deleteById(@PathVariable Integer id) {
 
         realisateurService.deleteById(id);
-    }
-
-
-    @GetMapping("/{id}")
-    public RealisateurSansFilmDto findRealById(@PathVariable int id) {
-        Realisateur realisateur = realisateurService.findById(id);
-        return objectMapper.convertValue(realisateur, RealisateurSansFilmDto.class);
     }
 
 
