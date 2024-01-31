@@ -1,5 +1,7 @@
 package com.example.cinemaspring.film;
 
+import com.example.cinemaspring.film.dto.FilmMinimumDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,16 +12,36 @@ public class FilmController {
 
     private final FilmService filmService;
 
-    public FilmController(FilmService filmService) {
+    private final ObjectMapper objectMapper;
+
+    public FilmController(FilmService filmService, ObjectMapper objectMapper) {
 
         this.filmService = filmService;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping
-    public List<Film> findAll() {
+    // Modification du type de retour de la méthode
+    public List<FilmMinimumDto> findAll() {
 
-        return filmService.findAll();
+        return filmService
+                .findAll()
+                // On parcours la liste des films
+                // stream() permet de créer un stream à partir de la liste
+                // C'est ce qui rend notre liste itérable
+                // puis on map chaque film en DTO
+                .stream().map(
+                        // On convertit chaque film en DTO
+                        // Via la méthode convertValue de l'object mapper
+                        // Elle prend en paramètre l'entité puis la classe de destination
+                        film -> objectMapper.convertValue(film, FilmMinimumDto.class)
+                        // Enfin, on récupère le stream et on le convertit en liste
+                ).toList();
     }
+//    public List<Film> findAll() {
+//
+//        return filmService.findAll();
+//    }
 
     @PostMapping
     public Film save(@RequestBody Film film) {

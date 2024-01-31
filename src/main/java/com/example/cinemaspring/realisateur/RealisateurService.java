@@ -2,6 +2,9 @@ package com.example.cinemaspring.realisateur;
 
 import com.example.cinemaspring.acteur.Acteur;
 import com.example.cinemaspring.acteur.ActeurRepository;
+import com.example.cinemaspring.film.Film;
+import com.example.cinemaspring.film.FilmRepository;
+import com.example.cinemaspring.film.FilmService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,8 +16,14 @@ public class RealisateurService {
 
     private final RealisateurRepository realisateurRepository;
 
-    public RealisateurService(RealisateurRepository realisateurRepository) {
+    //Pour pouvoir supprimer realisateur par son id
+    private final FilmService filmService;
+
+
+    public RealisateurService(FilmService filmService, RealisateurRepository realisateurRepository) {
         this.realisateurRepository = realisateurRepository;
+        this.filmService = filmService;
+
     }
 
     public List<Realisateur> findAll() {
@@ -43,8 +52,17 @@ public class RealisateurService {
     }
 
     public void deleteById(Integer id) {
-        Realisateur realisateur = this.findById(id);
-        realisateurRepository.delete(realisateur);
+      this.findById(id);
+
+
+        List<Film> filmsAvecRealisateur = filmService.findAllByRealisateurId(id);
+        filmsAvecRealisateur.forEach(
+                film -> {
+                    film.setRealisateur(null);
+                    filmService.save(film);
+                }
+        );
+        realisateurRepository.deleteById(id);
     }
 
     public Realisateur findByPrenom(String prenom ) {
@@ -52,4 +70,5 @@ public class RealisateurService {
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aucun realisateur se prénommant " + prenom + " n'a réalisé un de ces films !")
         );
     }
+
 }

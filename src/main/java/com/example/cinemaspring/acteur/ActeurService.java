@@ -24,7 +24,7 @@ public class ActeurService {
     public Acteur findById(Integer id) {
         return acteurRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Cet acteur n'est pas dans la base de donnée :("
+                        HttpStatus.NOT_FOUND, "Cet acteur n'est pas présent dans la base de donnée :("
                 )
         );
     }
@@ -44,6 +44,8 @@ public class ActeurService {
         acteurRepository.save(acteur);
         return acteur;
     }
+
+
 
     public void deleteById(Integer id) {
         Acteur acteur = this.findById(id);

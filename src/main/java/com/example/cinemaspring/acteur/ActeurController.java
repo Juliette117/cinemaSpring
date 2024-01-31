@@ -51,6 +51,12 @@ public class ActeurController {
         acteurService.deleteById(id);
     }
 
+    @GetMapping("/search")
+    public Acteur findByPrenom(@RequestParam String prenom) {
+
+        return acteurService.findByPrenom(prenom);
+    }
+
 
 
 

@@ -47,4 +47,11 @@ public class FilmService {
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Le film " + titre + " n'est pas dans la bdd :(")
         );
     }
+
+    public List<Film> findAllByRealisateurId(Integer id) {
+        return filmRepository.findAllByRealisateurId(id).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aucun films de la bdd a été réalisé par ce réalisteur")
+        );
+    }
+
 }

@@ -39,11 +39,11 @@ public class Film {
     @Column(length = 500)
     private String synopsis;
 
-    @ManyToOne(cascade = CascadeType.ALL) //Many = film ToOne = realisateur // OneToMany = liste de réalisateurs
+    @ManyToOne //Many = film ToOne = realisateur // OneToMany = liste de réalisateurs
     @JoinColumn(name = "realisateur_id")
     private Realisateur realisateur;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany
     @JoinTable(
         name = "acteur_film",
         joinColumns = @JoinColumn(name = "film_id"), //entite sur laquelle on est
