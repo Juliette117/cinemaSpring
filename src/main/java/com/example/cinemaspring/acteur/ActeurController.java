@@ -1,5 +1,6 @@
 package com.example.cinemaspring.acteur;
 
+import com.example.cinemaspring.acteur.dto.ActeurCompletDto;
 import com.example.cinemaspring.acteur.dto.ActeurSansFilmDto;
 import com.example.cinemaspring.film.Film;
 import com.example.cinemaspring.film.FilmService;
@@ -42,12 +43,28 @@ public class ActeurController {
                 ).toList();
     }
 
-    //GET /acteurs/{id}
-    @GetMapping("/{id}")
-    public Acteur findById(@PathVariable Integer id) {
 
-        return acteurService.findById(id);
+    @GetMapping( "/{id}")
+    public ActeurCompletDto findById(@PathVariable Integer id) {
+        return objectMapper.convertValue(this.acteurService.findById(id), ActeurCompletDto.class);
     }
+
+
+
+    @GetMapping("/{id}/acteurs")
+    public ActeurSansFilmDto findById(@PathVariable int id) {
+        Acteur acteur = acteurService.findById(id);
+        return objectMapper.convertValue(acteur, ActeurSansFilmDto.class);
+    }
+
+
+
+    @GetMapping("/search")
+    public Acteur findByPrenom(@RequestParam String prenom) {
+
+        return acteurService.findByPrenom(prenom);
+    }
+
 
     //POST /acteurs
     @PostMapping
@@ -70,23 +87,7 @@ public class ActeurController {
         acteurService.deleteById(id);
     }
 
-    @GetMapping("/search")
-    public Acteur findByPrenom(@RequestParam String prenom) {
 
-        return acteurService.findByPrenom(prenom);
-    }
-
-    @GetMapping("/{id}/acteurs")
-    public ActeurSansFilmDto findById(@PathVariable int id) {
-        Acteur acteur = acteurService.findById(id);
-        return objectMapper.convertValue(acteur, ActeurSansFilmDto.class);
-    }
-
-//    @GetMapping("/{id}")
-//    public ActeurSansFilmDto findActeurById(@PathVariable int id) {
-//        Acteur acteur = acteurService.findById(id);
-//        return objectMapper.convertValue(acteur, ActeurSansFilmDto.class);
-//    }
 
 
 
