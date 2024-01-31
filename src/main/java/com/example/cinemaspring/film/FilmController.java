@@ -1,6 +1,9 @@
 package com.example.cinemaspring.film;
 
+import com.example.cinemaspring.film.dto.FilmCompletDto;
 import com.example.cinemaspring.film.dto.FilmMinimumDto;
+import com.example.cinemaspring.film.dto.FilmSansActeurDto;
+import com.example.cinemaspring.film.dto.FilmSansRealisateurDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,42 +23,51 @@ public class FilmController {
         this.objectMapper = objectMapper;
     }
 
+    //  @GetMapping
+    //  public List<Film> findAll() {
+    //      return filmService.findAll();
+    //  }
+
     @GetMapping
     // Modification du type de retour de la méthode
     public List<FilmMinimumDto> findAll() {
 
         return filmService
                 .findAll()
-                // On parcours la liste des films
-                // stream() permet de créer un stream à partir de la liste
-                // C'est ce qui rend notre liste itérable
-                // puis on map chaque film en DTO
                 .stream().map(
-                        // On convertit chaque film en DTO
-                        // Via la méthode convertValue de l'object mapper
-                        // Elle prend en paramètre l'entité puis la classe de destination
                         film -> objectMapper.convertValue(film, FilmMinimumDto.class)
-                        // Enfin, on récupère le stream et on le convertit en liste
                 ).toList();
     }
-//    public List<Film> findAll() {
-//
-//        return filmService.findAll();
-//    }
+    @GetMapping("/{id}")
+    public FilmCompletDto findById(@PathVariable Integer id) {
+        Film film = filmService.findById(id);
+        return objectMapper.convertValue(film, FilmCompletDto.class);
+    }
+
+    @GetMapping("/{id}/acteurs")
+    public FilmSansRealisateurDto findActeurById(@PathVariable Integer id) {
+        Film film = filmService.findById(id);
+        return objectMapper.convertValue(film, FilmSansRealisateurDto.class);
+    }
+
+    @GetMapping("/{id}/realisateur")
+    public FilmSansActeurDto findRealisateurById(@PathVariable Integer id) {
+        Film film = filmService.findById(id);
+        return objectMapper.convertValue(film, FilmSansActeurDto.class);
+    }
+
+
 
     @PostMapping
     public Film save(@RequestBody Film film) {
 
         return filmService.save(film);
     }
+    
 
-    @GetMapping("/{id}")
-    public Film findById(@PathVariable Integer id) {
-
-        return filmService.findById(id);
-    }
 
     @PutMapping
+
     public Film update(@RequestBody Film film) {
 
         return filmService.update(film);

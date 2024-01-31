@@ -12,4 +12,7 @@ public interface FilmRepository extends JpaRepository<Film, Integer> {
 
     //SELECT * FROM film WHERE realisateur
     Optional<List<Film>> findAllByRealisateurId(Integer id);
+
+    Optional<Film> findActeurById(Integer id);
+    Optional<Film> findRealisateurById(Integer id);
 }

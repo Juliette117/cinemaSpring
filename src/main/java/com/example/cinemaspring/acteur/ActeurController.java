@@ -1,6 +1,9 @@
 package com.example.cinemaspring.acteur;
 
+import com.example.cinemaspring.acteur.dto.ActeurSansFilmDto;
 import com.example.cinemaspring.film.Film;
+import com.example.cinemaspring.film.FilmService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,16 +14,32 @@ public class ActeurController {
 
     private final ActeurService acteurService;
 
-    public ActeurController(ActeurService acteurService) {
+    private final FilmService filmService;
+    private final ObjectMapper objectMapper;
+
+    public ActeurController(ActeurService acteurService, FilmService filmService, ObjectMapper objectMapper) {
         this.acteurService = acteurService;
+        this.filmService = filmService;
+        this.objectMapper = objectMapper;
     }
 
 
     //GET /acteurs
-    @GetMapping
-    public List<Acteur> findAll() {
+//    @GetMapping
+//    public List<Acteur> findAll() {
+//
+//        return acteurService.findAll();
+//    }
 
-        return acteurService.findAll();
+    @GetMapping
+    // Modification du type de retour de la méthode
+    public List<ActeurSansFilmDto> findAll() {
+        return acteurService
+                .findAll()
+                .stream().map(
+
+                        acteur -> objectMapper.convertValue(acteur, ActeurSansFilmDto.class)
+                ).toList();
     }
 
     //GET /acteurs/{id}
@@ -56,6 +75,18 @@ public class ActeurController {
 
         return acteurService.findByPrenom(prenom);
     }
+
+    @GetMapping("/{id}/acteurs")
+    public ActeurSansFilmDto findById(@PathVariable int id) {
+        Acteur acteur = acteurService.findById(id);
+        return objectMapper.convertValue(acteur, ActeurSansFilmDto.class);
+    }
+
+//    @GetMapping("/{id}")
+//    public ActeurSansFilmDto findActeurById(@PathVariable int id) {
+//        Acteur acteur = acteurService.findById(id);
+//        return objectMapper.convertValue(acteur, ActeurSansFilmDto.class);
+//    }
 
 
 

@@ -32,6 +32,14 @@ public class FilmService {
         );
     }
 
+//    public Film findActeurById(Integer id) {
+//        return filmRepository.findById(id).orElseThrow(
+//                () -> new ResponseStatusException(
+//                        HttpStatus.NOT_FOUND, "Pas acteur"
+//                )
+//        );
+//    }
+
     public Film update(Film film) {
 
         return filmRepository.save(film);
