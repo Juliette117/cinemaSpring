@@ -11,12 +11,15 @@ import lombok.Setter;
 @Entity
 @Table(name = "salle")
 public class Salle {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private int numero;
-    private int capacite;
 
+    @Column(nullable = false)
+    private Integer numero;
 
+    @Column(nullable = false)
+    private Integer capacite;
 }
+
+
