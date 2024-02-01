@@ -1,9 +1,9 @@
 package com.example.cinemaspring.film;
 
-import com.example.cinemaspring.film.dto.FilmCompletDto;
-import com.example.cinemaspring.film.dto.FilmMinimumDto;
-import com.example.cinemaspring.film.dto.FilmSansActeurDto;
-import com.example.cinemaspring.film.dto.FilmSansRealisateurDto;
+import com.example.cinemaspring.acteur.Acteur;
+import com.example.cinemaspring.acteur.dto.ActeurSansFilmDto;
+import com.example.cinemaspring.film.dto.*;
+import com.example.cinemaspring.realisateur.Realisateur;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,31 +29,46 @@ public class FilmController {
     //  }
 
     @GetMapping
-    // Modification du type de retour de la méthode
-    public List<FilmMinimumDto> findAll() {
+    public List<FilmSeulDto> findAll() {
 
         return filmService
                 .findAll()
                 .stream().map(
-                        film -> objectMapper.convertValue(film, FilmMinimumDto.class)
+                        film -> objectMapper.convertValue(film, FilmSeulDto.class)
                 ).toList();
     }
     @GetMapping("/{id}")
     public FilmCompletDto findById(@PathVariable Integer id) {
         Film film = filmService.findById(id);
-        return objectMapper.convertValue(film, FilmCompletDto.class);
+        FilmCompletDto filmCompletDto = new FilmCompletDto();
+        filmCompletDto.setId(film.getId());
+        filmCompletDto.setTitre(film.getTitre());
+        filmCompletDto.setDuree(film.getDuree());
+        filmCompletDto.setDateSortie(film.getDateSortie());
+        filmCompletDto.setSynopsis(film.getSynopsis());
+        filmCompletDto.setRealisateur(film.getRealisateur());
+        filmCompletDto.setActeurs(film.getActeurs().stream().map(
+                acteur -> objectMapper.convertValue(acteur, ActeurSansFilmDto.class)
+        ).toList()
+        );
+
+        return filmCompletDto;
     }
+
+
 
     @GetMapping("/{id}/acteurs")
-    public FilmSansRealisateurDto findActeurById(@PathVariable Integer id) {
-        Film film = filmService.findById(id);
-        return objectMapper.convertValue(film, FilmSansRealisateurDto.class);
+    public List<ActeurSansFilmDto> findActeursByFilm(@PathVariable Integer id) {
+        List<Film> acteurs = filmService.findActeursByFilm(id);
+        return acteurs.stream().map(
+                acteur -> objectMapper.convertValue(acteur, ActeurSansFilmDto.class)
+        ).toList();
     }
 
-    @GetMapping("/{id}/realisateur")
-    public FilmSansActeurDto findRealisateurById(@PathVariable Integer id) {
-        Film film = filmService.findById(id);
-        return objectMapper.convertValue(film, FilmSansActeurDto.class);
+    @GetMapping("/{id}/realisateurs")
+    public Realisateur findRealisateursByFilm(@PathVariable Integer id) {
+
+        return filmService.findById(id).getRealisateur();
     }
 
 
