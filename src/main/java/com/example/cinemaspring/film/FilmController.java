@@ -65,7 +65,7 @@ public class FilmController {
         ).toList();
     }
 
-    @GetMapping("/{id}/realisateurs")
+    @GetMapping("/{id}/realisateur")
     public Realisateur findRealisateursByFilm(@PathVariable Integer id) {
 
         return filmService.findById(id).getRealisateur();
