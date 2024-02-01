@@ -5,6 +5,8 @@ import com.example.cinemaspring.acteur.dto.ActeurSansFilmDto;
 import com.example.cinemaspring.film.dto.*;
 import com.example.cinemaspring.realisateur.Realisateur;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -74,7 +76,8 @@ public class FilmController {
 
 
     @PostMapping
-    public Film save(@RequestBody Film film) {
+    @ResponseStatus(HttpStatus.CREATED) //POST = 201
+    public Film save(@RequestBody Film film) throws BadRequestException {
 
         return filmService.save(film);
     }

@@ -8,6 +8,7 @@ import com.example.cinemaspring.film.FilmService;
 import com.example.cinemaspring.film.dto.FilmMinimumDto;
 import com.example.cinemaspring.realisateur.dto.RealisateurCompletDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -64,7 +65,11 @@ public class RealisateurService {
         filmsAvecRealisateur.forEach(
                 film -> {
                     film.setRealisateur(null);
-                    filmService.save(film);
+                    try {
+                        filmService.save(film);
+                    } catch (BadRequestException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
         );
         realisateurRepository.deleteById(id);

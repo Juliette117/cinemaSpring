@@ -3,10 +3,14 @@ package com.example.cinemaspring.film;
 import com.example.cinemaspring.acteur.Acteur;
 import com.example.cinemaspring.acteur.ActeurService;
 import com.example.cinemaspring.film.dto.FilmDureeDateDto;
+import com.example.cinemaspring.film.exception.FilmNotFoundException;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.rmi.UnexpectedException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,15 +30,36 @@ public class FilmService {
         return filmRepository.findAll();
     }
 
-    public Film save(Film film) {
+    public Film save(Film film) throws BadRequestException {
+
+        verifyFilm(film);
+
         return filmRepository.save(film);
+    }
+
+    private static void verifyFilm(Film film) {
+        List<String> erreurs = new ArrayList<>();
+        if (film.getTitre() == null) {
+            erreurs.add("Titre please");
+        }
+        if (film.getDateSortie() == null) {
+            erreurs.add("La date de sortie est obligatoire");
+        }
+
+        if (film.getRealisateur() == null) {
+            erreurs.add("Le réalisateur est obligatoire");
+        }
+
+
     }
 
     public Film findById(Integer id) {
         return filmRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Ce film n'est pas présent dans la base de donnée :("
-                )
+              
+               () ->   new FilmNotFoundException(id)
+//                new ResponseStatusException(
+//                        HttpStatus.NOT_FOUND, "Ce film n'est pas présent dans la base de donnée :("
+//                )
         );
     }
 
@@ -78,7 +103,7 @@ public class FilmService {
         acteur = acteurService.findById(acteur.getId());
 
         film.getActeurs().add(acteur);
-        return this.save(film);
+        return filmRepository.save(film);
 
     }
 
