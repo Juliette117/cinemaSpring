@@ -5,6 +5,9 @@ import com.example.cinemaspring.acteur.ActeurRepository;
 import com.example.cinemaspring.film.Film;
 import com.example.cinemaspring.film.FilmRepository;
 import com.example.cinemaspring.film.FilmService;
+import com.example.cinemaspring.film.dto.FilmMinimumDto;
+import com.example.cinemaspring.realisateur.dto.RealisateurCompletDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,11 +22,13 @@ public class RealisateurService {
     //Pour pouvoir supprimer realisateur par son id
     private final FilmService filmService;
 
+    private final ObjectMapper objectMapper;
 
-    public RealisateurService(FilmService filmService, RealisateurRepository realisateurRepository) {
+
+    public RealisateurService(FilmService filmService, RealisateurRepository realisateurRepository, ObjectMapper objectMapper) {
         this.realisateurRepository = realisateurRepository;
         this.filmService = filmService;
-
+        this.objectMapper = objectMapper;
     }
 
     public List<Realisateur> findAll() {
@@ -69,6 +74,27 @@ public class RealisateurService {
         return realisateurRepository.findByPrenom(prenom).orElseThrow(
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aucun realisateur se prénommant " + prenom + " n'a réalisé un de ces films !")
         );
+    }
+
+    public RealisateurCompletDto findRealisateurWithFilm(Integer id) {
+        Realisateur realisateur = this.findById(id);
+        List<Film> filmsDuRealisateur = filmService.findAllByRealisateurId(id);
+        RealisateurCompletDto realisateurCompletDto = new RealisateurCompletDto();
+
+        realisateurCompletDto.setId(realisateur.getId());
+        realisateurCompletDto.setNom(realisateur.getNom());
+        realisateurCompletDto.setPrenom(realisateur.getPrenom());
+        realisateurCompletDto.setFilms(
+                filmsDuRealisateur.stream().map(
+                        film -> objectMapper.convertValue(film, FilmMinimumDto.class)
+                ).toList()
+        );
+
+        return realisateurCompletDto;
+    }
+
+    public List<Film> findFilmsByRealisateurId(Integer id) {
+        return filmService.findAllByRealisateurId(id);
     }
 
 }
