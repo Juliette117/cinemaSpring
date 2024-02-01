@@ -59,7 +59,7 @@ public class FilmController {
 
     @GetMapping("/{id}/acteurs")
     public List<ActeurSansFilmDto> findActeursByFilm(@PathVariable Integer id) {
-        List<Film> acteurs = filmService.findActeursByFilm(id);
+        List<Acteur> acteurs = filmService.findActeursByFilm(id);
         return acteurs.stream().map(
                 acteur -> objectMapper.convertValue(acteur, ActeurSansFilmDto.class)
         ).toList();

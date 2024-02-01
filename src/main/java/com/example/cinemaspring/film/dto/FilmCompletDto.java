@@ -1,6 +1,7 @@
 package com.example.cinemaspring.film.dto;
 
 import com.example.cinemaspring.acteur.dto.ActeurSansFilmDto;
+import com.example.cinemaspring.realisateur.Realisateur;
 import com.example.cinemaspring.realisateur.dto.RealisateurSansFilmDto;
 import lombok.Data;
 
@@ -22,5 +23,5 @@ public class FilmCompletDto {
 
     private List<ActeurSansFilmDto> acteurs = new ArrayList<>();
 
-    private RealisateurSansFilmDto realisateur;
+    private Realisateur realisateur;
 }

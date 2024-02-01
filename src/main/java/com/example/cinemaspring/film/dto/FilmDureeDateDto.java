@@ -5,10 +5,9 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class FilmMinimumDto {
+public class FilmDureeDateDto {
 
-    private Integer id;
     private String titre;
+    private int duree;
     private LocalDate dateSortie;
-
 }
