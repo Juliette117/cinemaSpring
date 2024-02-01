@@ -262,7 +262,6 @@ Nettoyer les données crées dans la bdd:
 
 ````
 docker-compose down -v
-
 ````
 
 
