@@ -102,7 +102,18 @@ public class FilmController {
 
     @PostMapping("/{id}/acteurs")
     public FilmCompletDto addActeurToFilm(@PathVariable Integer id, @RequestBody Acteur acteur) {
-        return 
+        FilmCompletDto filmCompletDto = new FilmCompletDto();
+        Film film = filmService.addActeurToFilm(id, acteur);
+        filmCompletDto.setTitre(film.getTitre());
+        filmCompletDto.setDuree(film.getDuree());
+        filmCompletDto.setDateSortie(film.getDateSortie());
+        filmCompletDto.setSynopsis(film.getSynopsis());
+        filmCompletDto.setRealisateur(film.getRealisateur());
+        filmCompletDto.setActeurs(film.getActeurs().stream().map(
+                unmappedActeur -> objectMapper.convertValue(unmappedActeur, ActeurSansFilmDto.class)
+            ).toList()
+        );
+        return filmCompletDto;
     }
 
 
