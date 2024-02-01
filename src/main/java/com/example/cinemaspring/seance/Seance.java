@@ -34,3 +34,4 @@ public class Seance {
     private Film film;
 
 }
+
