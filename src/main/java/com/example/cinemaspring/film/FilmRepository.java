@@ -8,11 +8,13 @@ import java.util.Optional;
 
 @Repository
 public interface FilmRepository extends JpaRepository<Film, Integer> {
+
+    //SELECT * FROM film WHERE titre LIKE
     Optional<Film> findByTitre(String titre);
 
-    //SELECT * FROM film WHERE realisateur
+    //SELECT * FROM film WHERE realisateur_id IS
     Optional<List<Film>> findAllByRealisateurId(Integer id);
 
-    Optional<Film> findActeurById(Integer id);
-    Optional<Film> findRealisateurById(Integer id);
+//    Optional<Film> findActeurById(Integer id);
+//    Optional<Film> findRealisateurById(Integer id);
 }
