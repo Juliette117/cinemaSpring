@@ -4,6 +4,7 @@ import com.example.cinemaspring.acteur.dto.ActeurCompletDto;
 import com.example.cinemaspring.acteur.dto.ActeurSansFilmDto;
 import com.example.cinemaspring.film.Film;
 import com.example.cinemaspring.film.FilmService;
+import com.example.cinemaspring.film.dto.FilmSansActeurDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,13 +15,10 @@ import java.util.List;
 public class ActeurController {
 
     private final ActeurService acteurService;
-
-    private final FilmService filmService;
     private final ObjectMapper objectMapper;
 
-    public ActeurController(ActeurService acteurService, FilmService filmService, ObjectMapper objectMapper) {
+    public ActeurController(ActeurService acteurService, ObjectMapper objectMapper) {
         this.acteurService = acteurService;
-        this.filmService = filmService;
         this.objectMapper = objectMapper;
     }
 
@@ -33,10 +31,9 @@ public class ActeurController {
 //    }
 
     @GetMapping
-    // Modification du type de retour de la méthode
     public List<ActeurSansFilmDto> findAll() {
-        return acteurService
-                .findAll()
+        List<Acteur> acteurs = acteurService.findAll();
+        return acteurs
                 .stream().map(
 
                         acteur -> objectMapper.convertValue(acteur, ActeurSansFilmDto.class)
@@ -44,19 +41,21 @@ public class ActeurController {
     }
 
 
-    @GetMapping( "/{id}")
+    @GetMapping("/{id}")
     public ActeurCompletDto findById(@PathVariable Integer id) {
-        return objectMapper.convertValue(this.acteurService.findById(id), ActeurCompletDto.class);
-    }
-
-
-
-    @GetMapping("/{id}/acteurs")
-    public ActeurSansFilmDto findById(@PathVariable int id) {
         Acteur acteur = acteurService.findById(id);
-        return objectMapper.convertValue(acteur, ActeurSansFilmDto.class);
-    }
+        ActeurCompletDto acteurCompletDto = new ActeurCompletDto();
 
+        acteurCompletDto.setId(acteur.getId());
+        acteurCompletDto.setNom(acteur.getNom());
+        acteurCompletDto.setPrenom(acteur.getPrenom());
+        acteurCompletDto.setFilms(
+                acteur.getFilms().stream().map(
+                        film -> objectMapper.convertValue(film, FilmSansActeurDto.class)
+                ).toList()
+        );
+        return acteurCompletDto;
+    }
 
 
     @GetMapping("/search")

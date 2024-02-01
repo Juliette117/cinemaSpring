@@ -29,15 +29,12 @@ public class ActeurService {
         );
     }
 
-    public Acteur save(Acteur acteur) {
+    public Acteur save(Acteur entity) {
 
-        return acteurRepository.save(acteur);
+        return acteurRepository.save(entity);
     }
 
-//    public Acteur update(Acteur acteur) {
-//
-//        return acteurRepository.save(acteur);
-//    }
+
 
     public Acteur updateById(Integer id) {
         Acteur acteur = this.findById(id);
