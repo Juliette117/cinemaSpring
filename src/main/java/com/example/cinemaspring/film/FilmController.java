@@ -100,5 +100,10 @@ public class FilmController {
         return filmService.findByTitre(titre);
     }
 
+    @PostMapping("/{id}/acteurs")
+    public FilmCompletDto addActeurToFilm(@PathVariable Integer id, @RequestBody Acteur acteur) {
+        return 
+    }
+
 
 }

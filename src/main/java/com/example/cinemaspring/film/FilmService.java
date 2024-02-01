@@ -75,8 +75,11 @@ public class FilmService {
 
     public Film addActeurToFilm(Integer id, Acteur acteur) {
         Film film = this.findById(id);
-        return filmRepository.save(film);
-        
+        acteur = acteurService.findById(acteur.getId());
+
+        film.getActeurs().add(acteur);
+        return this.save(film);
+
     }
 
 
