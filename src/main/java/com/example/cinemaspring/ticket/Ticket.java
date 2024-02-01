@@ -12,13 +12,16 @@ import lombok.Setter;
 @Entity
 public class Ticket {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
+    @Column(nullable = false)
     private String nomClient;
-    private int nbrePlaces;
 
-    @ManyToOne
-    private Seance seance;
-
-
+    @Column(nullable = false)
+    private Integer nombrePlaces;
 
 }
+
+
+
