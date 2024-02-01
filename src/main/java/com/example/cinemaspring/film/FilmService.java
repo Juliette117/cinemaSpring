@@ -1,6 +1,7 @@
 package com.example.cinemaspring.film;
 
 import com.example.cinemaspring.acteur.Acteur;
+import com.example.cinemaspring.acteur.ActeurService;
 import com.example.cinemaspring.film.dto.FilmDureeDateDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,12 @@ public class FilmService {
 
     private final FilmRepository filmRepository;
 
-    public FilmService( FilmRepository filmRepository) {
+    private final ActeurService acteurService;
+
+    public FilmService(FilmRepository filmRepository, ActeurService acteurService) {
 
         this.filmRepository = filmRepository;
+        this.acteurService = acteurService;
     }
 
     public List<Film> findAll() {
@@ -67,6 +71,12 @@ public class FilmService {
     public List<Acteur> findActeursByFilm(Integer id) {
         Film film= this.findById(id);
         return film.getActeurs();
+    }
+
+    public Film addActeurToFilm(Integer id, Acteur acteur) {
+        Film film = this.findById(id);
+        return filmRepository.save(film);
+        
     }
 
 
