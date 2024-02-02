@@ -82,6 +82,13 @@ public class FilmController {
         return filmService.save(film);
     }
 
+   // GET /film/{id}/seances
+    @GetMapping("/{id}/seances")
+
+
+
+
+
 
 
     @PutMapping

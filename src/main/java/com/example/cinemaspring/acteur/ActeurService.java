@@ -1,6 +1,5 @@
 package com.example.cinemaspring.acteur;
 
-import com.example.cinemaspring.film.Film;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -42,12 +41,12 @@ public class ActeurService {
         return acteur;
     }
 
-
-
     public void deleteById(Integer id) {
         Acteur acteur = this.findById(id);
         acteurRepository.delete(acteur);
     }
+
+
 
     public Acteur findByPrenom(String prenom ) {
         return acteurRepository.findByPrenom(prenom).orElseThrow(

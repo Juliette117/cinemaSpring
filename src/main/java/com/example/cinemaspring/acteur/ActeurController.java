@@ -79,12 +79,15 @@ public class ActeurController {
         return acteurService.updateById(id);
     }
 
+
+
     //DELETE /acteurs/{id}
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Integer id) {
 
         acteurService.deleteById(id);
     }
+
 
 
 

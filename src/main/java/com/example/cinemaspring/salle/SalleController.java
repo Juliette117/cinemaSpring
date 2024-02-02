@@ -25,6 +25,9 @@ public class SalleController {
         return this.salleService.findById(id);
     }
 
+    //GET /salles/disponible?date=2012-10-01
+    @GetMapping("/disponible")
+
     //POST /salles
     @PostMapping
     public Salle save(@RequestBody Salle salle) {

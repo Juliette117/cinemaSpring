@@ -1,9 +1,13 @@
 package com.example.cinemaspring.salle;
 
+import com.example.cinemaspring.seance.Seance;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,6 +24,9 @@ public class Salle {
 
     @Column(nullable = false)
     private Integer capacite;
+
+    @OneToMany(mappedBy = "salle")
+    private List<Seance> seances= new ArrayList<>();
 }
 
 

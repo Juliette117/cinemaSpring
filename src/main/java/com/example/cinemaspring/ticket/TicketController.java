@@ -1,5 +1,6 @@
 package com.example.cinemaspring.ticket;
 
+import com.example.cinemaspring.seance.Seance;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +46,13 @@ public class TicketController {
     public Ticket update(@RequestBody Ticket ticket) {
 
         return ticketService.save(ticket);
+    }
+
+    //PUT /tickets/id
+    @PutMapping("/{id}")
+    public Ticket updateById(@RequestBody Ticket ticket, @PathVariable Integer id) {
+        this.ticketService.update(id);
+        return ticket;
     }
 
 

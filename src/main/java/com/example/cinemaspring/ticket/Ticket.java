@@ -1,5 +1,6 @@
 package com.example.cinemaspring.ticket;
 
+import com.example.cinemaspring.film.Film;
 import com.example.cinemaspring.seance.Seance;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,7 +20,11 @@ public class Ticket {
     private String nomClient;
 
     @Column(nullable = false)
-    private Integer nombrePlaces;
+    private int nombrePlaces;
+
+    @ManyToOne
+    @JoinColumn(name = "seance_id")
+    private Seance seance;
 
 }
 

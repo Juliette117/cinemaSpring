@@ -3,6 +3,7 @@ package com.example.cinemaspring.seance;
 import com.example.cinemaspring.film.Film;
 import com.example.cinemaspring.realisateur.Realisateur;
 import com.example.cinemaspring.salle.Salle;
+import com.example.cinemaspring.ticket.Ticket;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,18 @@ public class Seance {
     @ManyToOne
     @JoinColumn(name = "film_id")
     private Film film;
+
+    @OneToMany(mappedBy = "seance")
+    private List<Ticket> tickets = new ArrayList<>();
+
+    public int getPlacesDisponibles(int capacite, int nombrePlaces) {
+        return capacite - nombrePlaces;
+    }
+
+    public void setPlacesDisponibles(int capacite, int nombrePlaces) {
+        this.placesDisponibles = capacite - nombrePlaces;
+    }
+
 
 }
 

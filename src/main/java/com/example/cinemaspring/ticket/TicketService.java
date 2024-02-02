@@ -1,4 +1,5 @@
 package com.example.cinemaspring.ticket;
+import com.example.cinemaspring.seance.Seance;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -41,6 +42,13 @@ public class TicketService {
         ticketRepository.save(ticket);
         return ticket;
     }
+    public void updateById(Ticket ticket, Integer id) {
+        this.findById(id);
+        ticket.setId(id);
+        this.ticketRepository.save(ticket);
+    }
+
+
 
 
 

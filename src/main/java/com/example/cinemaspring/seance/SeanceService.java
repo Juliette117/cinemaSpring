@@ -1,4 +1,8 @@
 package com.example.cinemaspring.seance;
+import com.example.cinemaspring.acteur.Acteur;
+import com.example.cinemaspring.film.Film;
+import com.example.cinemaspring.salle.Salle;
+import com.example.cinemaspring.salle.SalleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -10,8 +14,11 @@ public class SeanceService {
 
     private final SeanceRepository seanceRepository;
 
-    public SeanceService(SeanceRepository seanceRepository) {
+    private final SalleService salleService;
+
+    public SeanceService(SeanceRepository seanceRepository, SalleService salleService) {
         this.seanceRepository = seanceRepository;
+        this.salleService = salleService;
     }
 
     public List<Seance> findAll() {
@@ -41,6 +48,20 @@ public class SeanceService {
         seance.setId(id);
         this.seanceRepository.save(seance);
     }
+
+    public Salle findSalleBySeance(Integer id) {
+        Seance seance= this.findById(id);
+        return seance.getSalle();
+    }
+
+    public Seance getPlacesDisponibles(int capacite, int nombrePlace ) {
+        Seance seance = new Seance();
+        seance.setPlacesDisponibles(capacite, nombrePlace);
+        return seance;
+    }
+
+
+
 
 
 }
