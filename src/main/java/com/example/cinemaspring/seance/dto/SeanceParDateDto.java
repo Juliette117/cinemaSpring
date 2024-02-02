@@ -5,6 +5,7 @@ import com.example.cinemaspring.salle.Salle;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class SeanceParDateDto {
     private Integer id;
     private List<FilmSeulDto> films = new ArrayList<>();
     private Salle salle;
-    private LocalDate dateSeance;
+    private LocalDateTime dateSeance;
     private float prix;
     private int placesDisponibles;
 }

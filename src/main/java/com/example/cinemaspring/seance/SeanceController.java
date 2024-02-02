@@ -1,7 +1,9 @@
 package com.example.cinemaspring.seance;
-import com.example.cinemaspring.acteur.Acteur;
-import com.example.cinemaspring.acteur.dto.ActeurSansFilmDto;
+
 import com.example.cinemaspring.salle.Salle;
+import com.example.cinemaspring.seance.dto.SeanceTicketDto;
+import com.example.cinemaspring.ticket.Ticket;
+import com.example.cinemaspring.ticket.dto.TicketSansSeanceDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,10 +43,17 @@ public class SeanceController {
 
     //GET /seances/{id}/tickets
     @GetMapping("/{id}/tickets")
+    public List<TicketSansSeanceDto> findTicketBySeance(@PathVariable Integer id) {
+        List<Ticket> tickets = seanceService.findTicketBySeance(id);
+
+        return tickets.stream().map(
+                ticket -> objectMapper.convertValue(ticket, TicketSansSeanceDto.class)
+        ).toList();
+    }
 
 
     //GET /seances/disponible?date=2021-10-01
-    @GetMapping("/disponible")
+    //@GetMapping("/disponible")
 
 
     //POST /seances

@@ -35,6 +35,8 @@ public class SalleController {
         return salleService.save(salle);
     }
 
+
+
     //DELETE /salles/id
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class Seance {
 
     @Id
     private Integer id;
-    private LocalDate dateSeance;
+    private LocalDateTime dateSeance;
     private int placesDisponibles;
     private float prix;
 
@@ -37,13 +38,12 @@ public class Seance {
     @OneToMany(mappedBy = "seance")
     private List<Ticket> tickets = new ArrayList<>();
 
-    public int getPlacesDisponibles(int capacite, int nombrePlaces) {
-        return capacite - nombrePlaces;
-    }
+
 
     public void setPlacesDisponibles(int capacite, int nombrePlaces) {
         this.placesDisponibles = capacite - nombrePlaces;
     }
+
 
 
 }
