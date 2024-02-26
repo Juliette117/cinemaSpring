@@ -1,4 +1,6 @@
 package com.example.cinemaspring.salle;
+import com.example.cinemaspring.salle.dto.SalleCompletDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,31 +10,55 @@ import java.util.List;
 public class SalleController {
 
     private  final SalleService salleService;
+    private final ObjectMapper objectMapper;
 
-    public SalleController(SalleService salleService) {
+    public SalleController(SalleService salleService, ObjectMapper objectMapper) {
         this.salleService = salleService;
+        this.objectMapper = objectMapper;
     }
 
     //GET /salles
     @GetMapping
-    public List<Salle> findAll() {
-        return salleService.findAll();
+    public List<SalleCompletDto> findAll() {
+        List<Salle> salles = this.salleService.findAll();
+        return salles.stream()
+                .map(
+                        salle -> objectMapper.convertValue(
+                                salle, SalleCompletDto.class
+                        )
+                ).toList();
     }
 
     //GET /salles/id
     @GetMapping("/{id}")
-    public Salle findById(@PathVariable Integer id) {
-        return this.salleService.findById(id);
+    public SalleCompletDto findById(@PathVariable Integer id) {
+        return objectMapper.convertValue(
+                this.salleService.findById(id), SalleCompletDto.class
+        );
+
     }
 
     //GET /salles/disponible?date=2012-10-01
-    @GetMapping("/disponible")
+
+
 
     //POST /salles
     @PostMapping
-    public Salle save(@RequestBody Salle salle) {
+    public SalleCompletDto save(@RequestBody Salle salle) {
+        return objectMapper.convertValue(
+                this.salleService.save(salle), SalleCompletDto.class
+        );
 
-        return salleService.save(salle);
+    }
+
+    //PUT /salles/id
+    @PutMapping("/{id}")
+    public SalleCompletDto update(@RequestBody Salle salle, @PathVariable Integer id) {
+        return objectMapper.convertValue(
+                this.salleService.update(salle, id), SalleCompletDto.class
+        );
+
+
     }
 
 
@@ -43,12 +69,7 @@ public class SalleController {
         this.salleService.delete(id);
     }
 
-    //PUT /salles/id
-    @PutMapping("/{id}")
-    public Salle update(@RequestBody Salle salle, @PathVariable Integer id) {
-        this.salleService.update(salle, id);
-        return salle;
-    }
+
 }
 
 

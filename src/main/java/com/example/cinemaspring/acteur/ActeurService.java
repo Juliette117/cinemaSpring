@@ -35,9 +35,10 @@ public class ActeurService {
 
 
 
-    public Acteur updateById(Integer id) {
-        Acteur acteur = this.findById(id);
-        acteurRepository.save(acteur);
+    public Acteur update(Acteur acteur, Integer id) {
+        this.findById(id);
+        acteur.setId(id);
+        this.acteurRepository.save(acteur);
         return acteur;
     }
 
@@ -53,4 +54,6 @@ public class ActeurService {
                 ()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Aucun acteur qui se prénomme " + prenom + " n'a joué dans ces films !")
         );
     }
+
+
 }

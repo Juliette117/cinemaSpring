@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/acteurs")
 public class ActeurController {
-
     private final ActeurService acteurService;
     private final ObjectMapper objectMapper;
 
@@ -32,9 +31,8 @@ public class ActeurController {
 
     @GetMapping
     public List<ActeurSansFilmDto> findAll() {
-        List<Acteur> acteurs = acteurService.findAll();
-        return acteurs
-                .stream().map(
+        return acteurService.findAll().stream()
+                .map(
 
                         acteur -> objectMapper.convertValue(acteur, ActeurSansFilmDto.class)
                 ).toList();
@@ -68,15 +66,16 @@ public class ActeurController {
     //POST /acteurs
     @PostMapping
     public Acteur save(@RequestBody Acteur acteur) {
+        this.acteurService.save(acteur);
 
-        return acteurService.save(acteur);
+        return acteur;
     }
 
     //PUT /acteurs/{id}
     @PutMapping("/{id}")
-    public Acteur updateById(@PathVariable Integer id) {
-
-        return acteurService.updateById(id);
+    public Acteur update( @PathVariable Integer id, @RequestBody Acteur acteur ) {
+        this.acteurService.update(acteur, id);
+        return acteur;
     }
 
 
@@ -87,11 +86,6 @@ public class ActeurController {
 
         acteurService.deleteById(id);
     }
-
-
-
-
-
 
 
 

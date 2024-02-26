@@ -1,5 +1,6 @@
 package com.example.cinemaspring.ticket;
 import com.example.cinemaspring.film.exception.BadRequestException;
+import com.example.cinemaspring.seance.SeanceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,9 +12,11 @@ import java.util.List;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
+    private final SeanceService seanceService;
 
-    public TicketService(TicketRepository ticketRepository) {
+    public TicketService(TicketRepository ticketRepository, SeanceService seanceService) {
         this.ticketRepository = ticketRepository;
+        this.seanceService = seanceService;
     }
 
     public List<Ticket> findAll() {
@@ -48,7 +51,7 @@ public class TicketService {
             erreurs.add("Le nom du client est obligatoire");
         }
 
-        if(ticket.getNombrePlaces() < 0) {
+        if(ticket.getNombrePlaces() <= 0) {
             erreurs.add("Y a plus de place");
         }
 
@@ -62,19 +65,17 @@ public class TicketService {
         this.ticketRepository.delete(ticket);
     }
 
-    public Ticket update(Integer id) {
-        Ticket ticket = this.findById(id);
-        ticketRepository.save(ticket);
-        return ticket;
+    public Ticket update(Ticket ticket, Integer id) {
+        this.seanceService.findById(ticket.getSeance().getId());
+        this.findById(id);
+        ticket.setId(id);
+        return this.save(ticket);
     }
     public void updateById(Ticket ticket, Integer id) {
         this.findById(id);
         ticket.setId(id);
         this.ticketRepository.save(ticket);
     }
-
-
-
 
 
 }

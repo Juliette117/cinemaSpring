@@ -1,4 +1,5 @@
 package com.example.cinemaspring.seance;
+import com.example.cinemaspring.film.FilmService;
 import com.example.cinemaspring.film.exception.BadRequestException;
 import com.example.cinemaspring.salle.Salle;
 import com.example.cinemaspring.salle.SalleService;
@@ -17,11 +18,14 @@ public class SeanceService {
     private final SeanceRepository seanceRepository;
 
     private final SalleService salleService;
+    private final FilmService filmService;
     private final TicketService ticketService;
 
-    public SeanceService(SeanceRepository seanceRepository, SalleService salleService, TicketService ticketService) {
+
+    public SeanceService(SeanceRepository seanceRepository, SalleService salleService, FilmService filmService, TicketService ticketService) {
         this.seanceRepository = seanceRepository;
         this.salleService = salleService;
+        this.filmService = filmService;
         this.ticketService = ticketService;
     }
 
@@ -76,10 +80,14 @@ public class SeanceService {
         this.seanceRepository.delete(seance);
     }
 
-    public void update(Seance seance, Integer id) {
+    public Seance update(Seance seance, Integer id) {
+        Salle salle = salleService.findById(seance.getSalle().getId());
+        filmService.findById(seance.getFilm().getId());
         this.findById(id);
+        seance.setPlacesDisponibles(salle.getCapacite());
         seance.setId(id);
-        this.seanceRepository.save(seance);
+        return this.save(seance);
+
     }
 
     public Salle findSalleBySeance(Integer id) {
@@ -94,12 +102,17 @@ public class SeanceService {
 
     }
 
-    public Seance getPlacesDisponibles(int capacite, int nombrePlace ) {
+    public int findPlacesDisponibles(int capacite, int nombrePlace) {
         Seance seance = new Seance();
         seance.setPlacesDisponibles(capacite, nombrePlace);
-        return seance;
+        return seance.getPlacesDisponibles();
     }
 
+//    public LocalDateTime findByDate( LocalDateTime dateTime, Integer id) {
+//        Seance seance = this.findById(id);
+//        return seance.getDateSeance();
+//
+//    }
 
 
 

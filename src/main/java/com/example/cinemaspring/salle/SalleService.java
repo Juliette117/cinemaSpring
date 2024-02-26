@@ -38,10 +38,11 @@ public class SalleService {
         this.salleRepository.delete(salle);
     }
 
-    public void update(Salle salle, Integer id) {
+    public Salle update(Salle salle, Integer id) {
         this.findById(id);
         salle.setId(id);
-        this.salleRepository.save(salle);
+        return this.save(salle);
+
     }
 }
 

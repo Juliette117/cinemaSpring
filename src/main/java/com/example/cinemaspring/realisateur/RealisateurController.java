@@ -42,8 +42,9 @@ public class RealisateurController {
     public List<FilmDureeDateDto> findFilmsByRealisateurId(@PathVariable Integer id) {
         List<Film> filmsDuRealisateur = realisateurService.findFilmsByRealisateurId(id);
 
-        return filmsDuRealisateur.stream().map(
-                film -> objectMapper.convertValue(film, FilmDureeDateDto.class)
+        return filmsDuRealisateur.stream()
+                .map(
+                    film -> objectMapper.convertValue(film, FilmDureeDateDto.class)
         ).toList();
     }
 
@@ -53,15 +54,16 @@ public class RealisateurController {
     //POST /realisateurs
     @PostMapping
     public Realisateur save(@RequestBody Realisateur realisateur) {
-
-        return realisateurService.save(realisateur);
+        this.realisateurService.save(realisateur);
+        return realisateur;
     }
 
     //PUT /realisateurs/{id}
     @PutMapping("/{id}")
-    public Realisateur updateById(@PathVariable Integer id) {
+    public Realisateur update(@PathVariable Integer id, @RequestBody Realisateur realisateur) {
+        this.realisateurService.update(realisateur, id);
+        return realisateur;
 
-        return realisateurService.updateById(id);
     }
 
     //DELETE /realisateurs/{id}

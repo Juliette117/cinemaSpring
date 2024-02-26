@@ -3,7 +3,7 @@
 
 Application représentant le système d'un cinéma pour s'exercer à créer des CRUD et des DTO à l'aide de Spring Boot.
 
-### Consigne TP3 :memo:
+### Consigne TP3 :clipboard:
 
 Objectifs 🎯 </br>
 Ce TP a pour objectif de pratiquer les API rest avec Spring Boot. Il vous sera demandé de terminer les DTO concernant les entités Film, Acteurs, et Réalisateurs.
@@ -16,7 +16,7 @@ Vous devrez donc reprendre le code du TP précédent/démo et le modifier pour r
 Rendu 📝
 Votre projet Cinema sera à rendre sur un dépot GitHub.
 
-Vous inclurez y README pour expliquer comment lancer votre projet.
+Vous inclurez un README pour expliquer comment lancer votre projet.
 
 Evaluation 🚨
 Vous serez évalué sur les points suivants :
@@ -199,7 +199,7 @@ Si la création s'est bien passée, vous pourez retourner :
 
 ````
 
-### Consigne TP4 :memo: :exploding_head:
+### Consigne TP4 :clipboard: :exploding_head:
 
 TP 5 : Faire du chiffre 💰 <br>
 Objectifs 🎯 </br>
@@ -226,9 +226,6 @@ La complétion ou non de l'exercice </br>
 La qualité des commits </br>
 Maintenant que nous avons fidélisé notre backend, nous allons pouvoir intégrer la gestion des séances de cinéma.
 
-Le diagramme est le suivant :
-
-Diagram
 
 Fonctionnalités 
 De base <br>

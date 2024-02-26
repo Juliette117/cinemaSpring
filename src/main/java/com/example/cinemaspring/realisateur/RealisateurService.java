@@ -19,10 +19,8 @@ import java.util.List;
 public class RealisateurService {
 
     private final RealisateurRepository realisateurRepository;
-
     //Pour pouvoir supprimer realisateur par son id
     private final FilmService filmService;
-
     private final ObjectMapper objectMapper;
 
 
@@ -51,8 +49,9 @@ public class RealisateurService {
     }
 
 
-    public Realisateur updateById(Integer id) {
-        Realisateur realisateur = this.findById(id);
+    public Realisateur update(Realisateur realisateur, Integer id) {
+        this.findById(id);
+        realisateur.setId(id);
         realisateurRepository.save(realisateur);
         return realisateur;
     }
